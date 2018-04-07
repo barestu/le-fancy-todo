@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
 const port = process.env.PORT || 4000
 
+const indexRoutes = require('./routes/index')
 const userRoutes = require('./routes/users')
 const todoRoutes = require('./routes/todos')
 
@@ -19,6 +20,7 @@ db.once('open', function() {
   console.log('Connected to database...')
 })
 
+app.use('/', indexRoutes)
 app.use('/user', userRoutes)
 app.use('/todo', todoRoutes)
 

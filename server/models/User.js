@@ -2,11 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 let userSchema = new Schema ({
+  name: {type: String, required: true},
   email: {type: String, required: true},
   password: {type: String, required: true},
-  name: {type: String, required: true},
   gender: {type: String, default: '-'},
-  birthdate: {type: Date, default: '1970-01-01'}
+  birthday: {type: Date, default: '1970-03-22'}
 },{
   timestamps: true
 })
