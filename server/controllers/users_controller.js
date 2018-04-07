@@ -1,34 +1,33 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const secret = process.env.JWT_SECRET
-const saltRounds = 10
 
 module.exports = {
   register: function(req, res) {
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-      bcrypt.hash(req.body.password, salt, function(err, hash) {
-        let newUser = new User({
-          name: req.body.name,
-          email: req.body.email,
-          password: hash,
-          gender: req.body.gender,
-          birthday: req.body.birthday
-        })
+    let newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      gender: req.body.gender,
+      birthday: req.body.birthday,
+      role: req.body.role
+    })
 
-        newUser.save()
-        .then(user => {
-          res.status(201).send({
-            message: 'Register success!',
-            data: user
-          })
-        })
-        .catch(err => {
-          res.status(400).send({
-            message: 'Register failed!',
-            detail: err
-          })
-        })
+    newUser.save()
+    .then(user => {
+      res.status(201).send({
+        message: 'Register success!',
+        data: user
+      })
+    })
+    .catch(err => {
+      if (err.code === 11000) {
+        err.message = 'Email already exist!'
+      }
+      res.status(400).send({
+        error: 'Register failed!',
+        detail: err.message
       })
     })
   },
@@ -46,7 +45,8 @@ module.exports = {
             name: userData.name,
             email: userData.email,
             gender: userData.gender,
-            birthday: userData.birthday
+            birthday: userData.birthday,
+            role: userData.role
           }, secret)
 
           res.status(200).send({
