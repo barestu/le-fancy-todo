@@ -6,7 +6,7 @@ const saltRounds = 10
 let userSchema = new Schema ({
   name: {
     type: String,
-    required: [true, 'Required!']
+    required: [true, 'required!']
   },
   email: {
     type: String,
@@ -24,10 +24,12 @@ let userSchema = new Schema ({
     default: 'user'
   },
   gender: {
-    type: String
+    type: String,
+    default: null
   },
   birthday: {
-    type: Date
+    type: Date,
+    default: null
   },
   todos: [{
     type: Schema.Types.ObjectId, ref: 'Todo'

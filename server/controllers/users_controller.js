@@ -42,10 +42,7 @@ module.exports = {
       bcrypt.compare(plainPassword, userData.password, function(err, found) {
         if (found) {
           let token = jwt.sign({
-            name: userData.name,
-            email: userData.email,
-            gender: userData.gender,
-            birthday: userData.birthday,
+            id: userData._id,
             role: userData.role
           }, secret)
 
@@ -64,6 +61,42 @@ module.exports = {
     .catch(err => {
       res.status(400).send({
         message: 'Invalid email!'
+      })
+    })
+  },
+
+  findAll: function(req, res) {
+    User.find()
+    .populate('todos', ['task'])
+    .then(user => {
+      res.status(200).send({
+        message: 'Show all users',
+        data: user
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Get data failed',
+        err: err.message
+      })
+    })
+  },
+
+  findOne: function(req, res) {
+    User.findById({
+      _id: req.params.id 
+    })
+    .populate('todos')
+    .then(user => {
+      res.status(200).send({
+        message: 'Show user data',
+        data: user
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Get data failed',
+        err: err.message
       })
     })
   }

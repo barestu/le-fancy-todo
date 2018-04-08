@@ -1,27 +1,157 @@
 const Todo = require('../models/Todo')
+const User = require('../models/User')
+const jwt = require('jsonwebtoken')
+const secret = process.env.JWT_SECRET
 
 module.exports = {
-  showTodo: function(req, res) {
-    res.status(200).send({
-      message: 'success'
+  findMine: function(req, res) {
+    let token = req.headers.token
+    let decoded = jwt.verify(token, secret)
+
+    Todo.find({
+      user: decoded.id
+    })
+    .then(todos => {
+      res.status(200).send({
+        message: 'Show my todos',
+        data: todos
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Get data failed',
+        err: err.message
+      })
     })
   },
 
-  addTodo: function(req, res) {
-    res.status(201).send({
-      message: 'success'
+  findAll: function(req, res) {
+    Todo.find()
+    .populate('user', ['name'])
+    .then(todos => {
+      res.status(200).send({
+        message: 'Show all todo on apps',
+        data: todos
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Get data failed',
+        err: err.message
+      })
     })
   },
 
-  updateTodo: function(req, res) {
-    res.status(201).send({
-      message: 'success'
+  findOne: function(req, res) {
+    Todo.findById({
+      _id: req.params.id
+    })
+    .populate('user', ['name'])
+    .then(todo => {
+      res.status(200).send({
+        message: 'Show todo data',
+        data: todo
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Get data failed',
+        err: err.message
+      })
     })
   },
 
-  deleteTodo: function(req, res) {
-    res.status(200).send({
-      message: 'success'
+  add: function(req, res) {
+    let token = req.headers.token
+    let decoded = jwt.verify(token, secret)
+
+    let newTodo = new Todo({
+      user: decoded.id,
+      task: req.body.task,
+      due_date: req.body.due_date
+    })
+
+    newTodo.save()
+    .then(success => {
+      User.findOneAndUpdate({
+        _id: decoded.id
+      }, {
+        $push: {todos: newTodo._id}
+      })
+      .then(success => {
+        res.status(201).send({
+          message: 'Add todo success!',
+          todo: newTodo
+        })
+      })
+      .catch(err => {
+        res.status(400).send({
+          message: 'Add todo failed!',
+          error: err.message
+        })  
+      })
+    })
+    .catch(err => {
+      res.status(400).send({
+        message: 'Add todo failed!',
+        error: err.message
+      })
+    })
+  },
+
+  update: function(req, res) {
+    Todo.findOneAndUpdate({
+      _id: req.params.id
+    },{
+      task: req.body.task,
+      done: req.body.done,
+      due_date: req.body.due_date
+    })
+    .then(success => {
+      res.status(201).send({
+        message: 'Update todo success!',
+        data: req.body
+      })
+    })
+    .catch(err => {
+      res.status(400).send({
+        message: 'Update todo failed!',
+        error: err.message
+      })
+    })
+  },
+
+  remove: function(req, res) {
+    let token = req.headers.token
+    let decoded = jwt.verify(token, secret)
+
+    Todo.deleteOne({
+      _id: req.params.id
+    })
+    .then(deleted => {
+      User.findOneAndUpdate({
+        _id: decoded.id
+      },{
+        $pull: {todos: req.params.id}
+      })
+      .then(deleted => {
+        res.status(200).send({
+          message: 'Delete todo success!',
+          data: deleted
+        })
+      })
+      .catch(err => {
+        res.status(400).send({
+          message: 'Delete todo failed!',
+          data: err.message
+        })  
+      })
+    })
+    .catch(err => {
+      res.status(400).send({
+        message: 'Delete todo failed!',
+        data: err.message
+      })
     })
   }
 }
