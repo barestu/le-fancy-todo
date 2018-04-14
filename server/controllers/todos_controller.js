@@ -65,16 +65,19 @@ module.exports = {
     let token = req.headers.token
     let decoded = jwt.verify(token, secret)
 
+    console.log('DECODED', decoded)
+    console.log('REQ BODY', req.body)
+
     let newTodo = new Todo({
-      user: decoded.id,
-      task: req.body.task,
-      due_date: req.body.due_date
+      user: decoded.token._id,
+      task: req.body.taskName,
+      due_date: req.body.dueDate
     })
 
     newTodo.save()
     .then(success => {
       User.findOneAndUpdate({
-        _id: decoded.id
+        _id: decoded.token._id
       }, {
         $push: {todos: newTodo._id}
       })
