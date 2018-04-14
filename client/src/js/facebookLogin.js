@@ -10,7 +10,7 @@ function statusChangeCallback(response) {
     .then(response => {
       console.log('Logged in', response)
       localStorage.setItem('token', response.data.token)
-      window.location.href = "https://4a55af47.ngrok.io/main.html"
+      window.location.href = 'https://4a55af47.ngrok.io/main.html'
     })
     .catch(err => {
       console.log('Login FB failed', err)
@@ -34,10 +34,6 @@ window.fbAsyncInit = function() {
     xfbml      : true,
     version    : 'v2.12'
   });
-
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
 };
 
 (function(d, s, id) {
@@ -47,11 +43,3 @@ window.fbAsyncInit = function() {
   js.src = "https://connect.facebook.net/en_US/sdk.js";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-
-function logout() {
-  FB.logout(function(response) {
-    // user is now logged out
-    localStorage.removeItem('token')
-    console.log('fb logout')
-  });
-}

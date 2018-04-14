@@ -49,7 +49,7 @@ module.exports = {
 
           res.status(200).send({
             message: 'Login success',
-            data: token
+            token: token
           })
         } else {
           res.status(400).send({
