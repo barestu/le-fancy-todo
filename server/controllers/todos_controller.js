@@ -9,12 +9,12 @@ module.exports = {
     let decoded = jwt.verify(token, secret)
 
     Todo.find({
-      user: decoded.id
+      user: decoded.token._id
     })
     .then(todos => {
       res.status(200).send({
         message: 'Show my todos',
-        data: todos
+        todos: todos
       })
     })
     .catch(err => {
@@ -31,7 +31,7 @@ module.exports = {
     .then(todos => {
       res.status(200).send({
         message: 'Show all todo on apps',
-        data: todos
+        todos: todos
       })
     })
     .catch(err => {
@@ -50,7 +50,7 @@ module.exports = {
     .then(todo => {
       res.status(200).send({
         message: 'Show todo data',
-        data: todo
+        todos: todo
       })
     })
     .catch(err => {
@@ -103,6 +103,8 @@ module.exports = {
   },
 
   update: function(req, res) {
+    console.log('HERE')
+
     Todo.findOneAndUpdate({
       _id: req.params.id
     },{
@@ -133,7 +135,7 @@ module.exports = {
     })
     .then(deleted => {
       User.findOneAndUpdate({
-        _id: decoded.id
+        _id: decoded.token._id
       },{
         $pull: {todos: req.params.id}
       })

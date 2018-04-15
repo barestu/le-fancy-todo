@@ -2,9 +2,6 @@ let vue = new Vue({
   el: '#app',
   data: {
     isLogin: false,
-    taskName: '',
-    dueDate: '',
-    listTodos: [],
   },
   methods: {
     checkAuth: function() {
@@ -22,24 +19,6 @@ let vue = new Vue({
       console.log('log out clicked')
       localStorage.removeItem('token')
       window.location.href = 'https://be7dbe7d.ngrok.io/'
-    },
-
-    addTask: function() {
-      let token = localStorage.getItem('token')
-      let newTask = {
-        taskName: this.taskName,
-        dueDate: this.dueDate
-      }
-
-      axios.post('http://localhost:4000/todo/add', newTask, {
-        headers: { token }
-      })
-      .then(response => {
-        console.log('add success', response)
-      })
-      .catch(err => {
-        console.log('add failed', err)
-      })
     }
   },
   
