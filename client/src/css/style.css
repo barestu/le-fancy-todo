@@ -1,0 +1,66 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Dosis', sans-serif;
+  background-color: #19B5FE;  
+}
+
+.content {
+  height: 100%;
+  /* background-color: #19B5FE; */
+}
+
+.content .container {
+  height: 100%
+}
+
+.login-form {
+  background-color: #fff;
+  border-radius: 10px;
+  border-right: 2px solid rgba(71, 161, 197, 0.9);
+  border-bottom: 2px solid rgba(71, 161, 197, 0.9);
+  position: relative;
+  top: 22%;
+  height: 450px;
+  width: 320px;
+  margin: 0 auto;
+}
+
+.register-form {
+  background-color: #fff;
+  border-radius: 10px;
+  border-right: 2px solid rgba(71, 161, 197, 0.9);
+  border-bottom: 2px solid rgba(71, 161, 197, 0.9);
+  position: relative;
+  top: 5%;
+  min-height: 740px;
+  min-width: 320px;
+  margin: 0 auto;
+}
+
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+input#exampleInputEmail1 {
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+input#exampleInputPassword1 {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

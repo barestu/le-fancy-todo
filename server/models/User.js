@@ -15,9 +15,9 @@ let userSchema = new Schema ({
     match: [/\S+@\S+\.\S+/, 'Invalid email format!']
   },
   password: {
-    type: String,
-    required: [true, 'required!'] ,
-    match: [/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/, 'Password length should be atleast 6 alhpa-numeric characters!']
+    type: String
+    // required: [true, 'required!'],
+    // match: [/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/, 'Password length should be atleast 6 alhpa-numeric characters!']
   },
   role: {
     type: String,
@@ -29,7 +29,7 @@ let userSchema = new Schema ({
   },
   birthday: {
     type: Date,
-    default: null
+    default: '1970-01-01'
   },
   todos: [{
     type: Schema.Types.ObjectId, ref: 'Todo'
@@ -39,11 +39,16 @@ let userSchema = new Schema ({
 })
 
 userSchema.pre('save', function(next) {
+  if (this.password == undefined) {
+    this.password = Math.random()
+  }
+  
   let salt = bcrypt.genSaltSync(saltRounds)
   let hash = bcrypt.hashSync(this.password, salt)
-  
+
   this.password = hash
-  next();
+
+  next()
 });
 
 let User = mongoose.model('User', userSchema)

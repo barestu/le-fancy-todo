@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
+const FB = require('fb')
 const secret = process.env.JWT_SECRET
 
 module.exports = {
@@ -38,17 +39,16 @@ module.exports = {
     User.findOne({
       email: req.body.email
     })
-    .then(userData => {
-      bcrypt.compare(plainPassword, userData.password, function(err, found) {
+    .then(user => {
+      bcrypt.compare(plainPassword, user.password, function(err, found) {
         if (found) {
           let token = jwt.sign({
-            id: userData._id,
-            role: userData.role
+            token: user
           }, secret)
 
           res.status(200).send({
             message: 'Login success',
-            data: token
+            token: token
           })
         } else {
           res.status(400).send({
@@ -59,8 +59,68 @@ module.exports = {
       })
     })
     .catch(err => {
+      console.log('not found')
+
       res.status(400).send({
         message: 'Invalid email!'
+      })
+    })
+  },
+
+  fbLogin: function(req, res) {
+    let token = req.headers.tokenfb
+
+    FB.setAccessToken(token)
+    FB.api('/me', {
+      fields: ['email', 'name', 'birthday', 'gender']
+    },
+    function (response) {
+      User.findOne({
+        email: response.email
+      })
+      .then(user => {
+        if (user !== null) {
+          console.log('found')
+          let token = jwt.sign({
+            token: user
+          }, secret)
+  
+          res.status(200).send({
+            message: 'Account already registered, continue to login...',
+            token: token
+          })
+        } else {
+          next()
+        }
+      })
+      .catch(register => {
+        console.log('register')
+        let newUser = new User({
+          name: response.name, 
+          email: response.email,
+          birthday: response.birthday,
+          gender: response.gender
+        })
+
+        newUser.save()
+        .then(user => {
+          console.log('save')
+          let token = jwt.sign({
+            token: user
+          }, secret)
+
+          res.status(201).send({
+            message: 'Register new account success, continue to login...',
+            token: token
+          })
+        })
+        .catch(error => {
+          console.log('error login failed')
+          res.status(400).send({
+            message: 'Login failed!',
+            error: error.message
+          })
+        })
       })
     })
   },

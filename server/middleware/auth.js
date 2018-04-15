@@ -4,7 +4,7 @@ const secret = process.env.JWT_SECRET
 module.exports = {
   loginAuth: function(req, res, next) {
     let token = req.headers.token
-    
+
     if (token) {
       jwt.verify(token, secret, function(err, decoded) {
         if (decoded) {
