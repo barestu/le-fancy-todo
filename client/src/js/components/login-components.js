@@ -38,14 +38,14 @@ Vue.component('login', {
   },
   methods: {
     login: function() {
-      axios.post('http://localhost:4000/user/login', {
+      axios.post('http://server-taskfan.barestu.com/user/login', {
         email: this.email,
         password: this.password
       })
       .then(response => {
         console.log('Logged in', response)
         localStorage.setItem('token', response.data.token)
-        window.location.href = 'https://be7dbe7d.ngrok.io/main.html'
+        window.location.href = 'https://taskfan-201211.firebaseapp.com/main.html'
       })
       .catch(err => {
         console.log('Login failed', err)

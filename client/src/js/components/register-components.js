@@ -59,7 +59,7 @@ Vue.component('register', {
     register: function () {
       console.log('register clicked')
 
-      axios.post('http://localhost:4000/user/register', {
+      axios.post('http://server-taskfan.barestu.com/register', {
         name: this.name,
         email: this.email,
         password: this.password,
@@ -68,7 +68,7 @@ Vue.component('register', {
       })
       .then(response => {
         console.log('Register success', response)
-        window.location.href = 'https://be7dbe7d.ngrok.io/'
+        window.location.href = 'https://taskfan-201211.firebaseapp.com/'
       })
       .catch(err => {
         console.log('Register failed', err)
