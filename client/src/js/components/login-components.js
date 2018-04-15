@@ -45,7 +45,7 @@ Vue.component('login', {
       .then(response => {
         console.log('Logged in', response)
         localStorage.setItem('token', response.data.token)
-        window.location.href = 'https://4a55af47.ngrok.io/main.html'
+        window.location.href = 'https://be7dbe7d.ngrok.io/main.html'
       })
       .catch(err => {
         console.log('Login failed', err)

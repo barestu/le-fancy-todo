@@ -14,14 +14,14 @@ let vue = new Vue({
         this.isLogin = true
       } else {
         this.isLogin = false
-        window.location.href = 'https://4a55af47.ngrok.io/'
+        window.location.href = 'https://be7dbe7d.ngrok.io/'
       }
     },
 
     logout: function() {
       console.log('log out clicked')
       localStorage.removeItem('token')
-      window.location.href = 'https://4a55af47.ngrok.io/'
+      window.location.href = 'https://be7dbe7d.ngrok.io/'
     },
 
     addTask: function() {
@@ -45,8 +45,8 @@ let vue = new Vue({
   
   beforeMount() {
     let location = window.location.href
-    let indexPage = 'https://4a55af47.ngrok.io/'
-    let registerPage = 'https://4a55af47.ngrok.io/register.html'
+    let indexPage = 'https://be7dbe7d.ngrok.io/'
+    let registerPage = 'https://be7dbe7d.ngrok.io/register.html'
 
     if (location !== indexPage && location !== registerPage) {
       this.checkAuth()

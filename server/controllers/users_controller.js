@@ -39,12 +39,11 @@ module.exports = {
     User.findOne({
       email: req.body.email
     })
-    .then(userData => {
-      bcrypt.compare(plainPassword, userData.password, function(err, found) {
+    .then(user => {
+      bcrypt.compare(plainPassword, user.password, function(err, found) {
         if (found) {
           let token = jwt.sign({
-            id: userData._id,
-            role: userData.role
+            token: user
           }, secret)
 
           res.status(200).send({

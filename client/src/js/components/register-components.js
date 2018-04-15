@@ -58,6 +58,21 @@ Vue.component('register', {
   methods: {
     register: function () {
       console.log('register clicked')
+
+      axios.post('http://localhost:4000/user/register', {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        birthday: this.birthday,
+        gender: this.gender
+      })
+      .then(response => {
+        console.log('Register success', response)
+        window.location.href = 'https://be7dbe7d.ngrok.io/'
+      })
+      .catch(err => {
+        console.log('Register failed', err)
+      })
     }
   }
 })
