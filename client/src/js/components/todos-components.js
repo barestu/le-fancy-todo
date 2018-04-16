@@ -110,7 +110,7 @@ Vue.component('todos', {
     showMyTodos: function () {
       this.todos = []
 
-      axios.get('http://server-taskfan.barestu.com/todo/', {
+      axios.get('https://taskfan-server.herokuapp.com/todo/', {
         headers: { token }
       })
       .then(response => {
@@ -130,7 +130,7 @@ Vue.component('todos', {
         dueDate: this.dueDate
       }
 
-      axios.post('http://server-taskfan.barestu.com/todo/add', newTask, {
+      axios.post('https://taskfan-server.herokuapp.com/todo/add', newTask, {
         headers: { token }
       })
       .then(response => {
@@ -145,7 +145,7 @@ Vue.component('todos', {
     changeTaskStatus: function (todo, status) {
       let task_id = todo._id
 
-      axios.put(`http://server-taskfan.barestu.com/todo/update/${task_id}`, {
+      axios.put(`https://taskfan-server.herokuapp.com/todo/update/${task_id}`, {
         task: todo.task,
         done: status,
         due_date: todo.due_date
@@ -166,7 +166,7 @@ Vue.component('todos', {
 
       console.log(todo.task)
 
-      axios.put(`http://server-taskfan.barestu.com/todo/update/${task_id}`, {
+      axios.put(`https://taskfan-server.herokuapp.com/todo/update/${task_id}`, {
         task: this.update.task,
         done: this.update.done,
         due_date: this.update.due_date
@@ -192,7 +192,7 @@ Vue.component('todos', {
     deleteTask: function (todo) {
       let task_id = todo._id
 
-      axios.delete(`http://server-taskfan.barestu.com/todo/delete/${task_id}`, {
+      axios.delete(`https://taskfan-server.herokuapp.com/todo/delete/${task_id}`, {
         headers: { token }
       })
       .then(response => {
