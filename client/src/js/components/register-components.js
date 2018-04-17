@@ -38,6 +38,7 @@ Vue.component('register', {
       </div>
       
       <div class="text-center">
+        <a href="/" class="btn btn-secondary px-5 mt-3">Cancel</a>
         <button @click.prevent="register" class="btn btn-primary px-5 mt-3">Register</button>
       </div>
     </div>
@@ -59,7 +60,7 @@ Vue.component('register', {
     register: function () {
       console.log('register clicked')
 
-      axios.post('https://taskfan-server.herokuapp.com/register', {
+      axios.post('http://localhost:4000/user/register', {
         name: this.name,
         email: this.email,
         password: this.password,

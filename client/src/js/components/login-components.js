@@ -38,7 +38,7 @@ Vue.component('login', {
   },
   methods: {
     login: function() {
-      axios.post('https://taskfan-server.herokuapp.com/user/login', {
+      axios.post('http://localhost:4000/user/login', {
         email: this.email,
         password: this.password
       })

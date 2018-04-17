@@ -4,14 +4,6 @@ Vue.component('todos', {
   name: 'todos',
   template: `
   <div class="container">
-    <form v-on:submit.prevent="addTask">
-      <label for="task">Task</label>
-      <input type="text" class="form-control" v-model="taskName">
-      <label for="due">Due Date</label>
-      <input type="date" class="form-control" v-model="dueDate">
-      <button @click="showMyTodos" class="btn btn-primary" type="submit">Submit Task</button>
-    </form>
-
     <div class="todo-list p-4">
       <h1>Your Todos</h1>
       <table class="table table-striped">
@@ -110,7 +102,7 @@ Vue.component('todos', {
     showMyTodos: function () {
       this.todos = []
 
-      axios.get('https://taskfan-server.herokuapp.com/todo/', {
+      axios.get('http://localhost:4000/todo/', {
         headers: { token }
       })
       .then(response => {
@@ -124,28 +116,10 @@ Vue.component('todos', {
       })
     },
 
-    addTask: function () {
-      let newTask = {
-        taskName: this.taskName,
-        dueDate: this.dueDate
-      }
-
-      axios.post('https://taskfan-server.herokuapp.com/todo/add', newTask, {
-        headers: { token }
-      })
-      .then(response => {
-        console.log('add success', response)
-        this.showMyTodos()
-      })
-      .catch(err => {
-        console.log('add failed', err)
-      })
-    },
-
     changeTaskStatus: function (todo, status) {
       let task_id = todo._id
 
-      axios.put(`https://taskfan-server.herokuapp.com/todo/update/${task_id}`, {
+      axios.put(`http://localhost:4000/todo/update/${task_id}`, {
         task: todo.task,
         done: status,
         due_date: todo.due_date
@@ -166,7 +140,7 @@ Vue.component('todos', {
 
       console.log(todo.task)
 
-      axios.put(`https://taskfan-server.herokuapp.com/todo/update/${task_id}`, {
+      axios.put(`http://localhost:4000/todo/update/${task_id}`, {
         task: this.update.task,
         done: this.update.done,
         due_date: this.update.due_date
@@ -192,7 +166,7 @@ Vue.component('todos', {
     deleteTask: function (todo) {
       let task_id = todo._id
 
-      axios.delete(`https://taskfan-server.herokuapp.com/todo/delete/${task_id}`, {
+      axios.delete(`http://localhost:4000/todo/delete/${task_id}`, {
         headers: { token }
       })
       .then(response => {
@@ -218,11 +192,5 @@ Vue.component('todos', {
       
       return newDate
     }
-  },
-
-  mounted: function () {
-    this.$nextTick(function () {
-      this.showMyTodos()
-    })
   }
 })

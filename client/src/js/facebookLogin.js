@@ -2,7 +2,7 @@ function statusChangeCallback(response) {
   console.log('statusChangeCallback', response);
 
   if (response.status === 'connected') {
-    axios.post('https://taskfan-server.herokuapp.com/user/fb-login', {}, {
+    axios.post('http://localhost:4000/user/fb-login', {}, {
       headers: {
         tokenFB: response.authResponse.accessToken
       }
