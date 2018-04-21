@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import swal from 'sweetalert'
 
-const baseUrl = 'http://localhost:4000'
+// const baseUrl = 'http://localhost:4000'
+const baseUrl = 'https://taskfan-server.herokuapp.com'
 let token = localStorage.getItem('token')
 
 Vue.use(Vuex)
@@ -29,14 +30,13 @@ export default new Vuex.Store({
         today = today.getDate()
         dueDate = dueDate.getDate()
 
-        let result = today - dueDate
+        let result = dueDate - today
 
         if (result < 2 && todo.done === false) {
-          console.log(todo)
           arrResult.push(todo)
         }
       })
-      console.log(arrResult)
+
       return arrResult
     }
   },

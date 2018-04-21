@@ -195,10 +195,10 @@ export default {
       'addTodos'
     ]),
     logout () {
-      localStorage.removeItem('token')
-      this.$isLogin = false
       this.$router.push('/login')
-      window.location.href = '/'
+      this.$isLogin = false
+      localStorage.removeItem('token')
+      // window.location.href = '/'
     }
   },
   computed: {
@@ -214,7 +214,6 @@ export default {
   mounted () {
     if (this.$isLogin) {
       this.getTodos()
-      console.log(this.todosTomorrow)
     } else {
       this.$router.push('/login')
     }
