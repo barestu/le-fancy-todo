@@ -64,10 +64,6 @@ module.exports = {
   add: function(req, res) {
     let token = req.headers.token
     let decoded = jwt.verify(token, secret)
-
-    console.log('DECODED', decoded)
-    console.log('REQ BODY', req.body)
-
     let newTodo = new Todo({
       user: decoded.token._id,
       task: req.body.taskName,

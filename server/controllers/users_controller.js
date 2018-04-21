@@ -59,8 +59,6 @@ module.exports = {
       })
     })
     .catch(err => {
-      console.log('not found')
-
       res.status(400).send({
         message: 'Invalid email!'
       })
@@ -80,7 +78,6 @@ module.exports = {
       })
       .then(user => {
         if (user !== null) {
-          console.log('found')
           let token = jwt.sign({
             token: user
           }, secret)
@@ -90,36 +87,36 @@ module.exports = {
             token: token
           })
         } else {
-          next()
+          let newUser = new User({
+            name: response.name, 
+            email: response.email,
+            birthday: response.birthday,
+            gender: response.gender
+          })
+  
+          newUser.save()
+          .then(user => {
+            let token = jwt.sign({
+              token: user
+            }, secret)
+  
+            res.status(201).send({
+              message: 'Register new account success, continue to login...',
+              token: token
+            })
+          })
+          .catch(error => {
+            res.status(400).send({
+              message: 'Login failed!',
+              error: error.message
+            })
+          })
         }
       })
-      .catch(register => {
-        console.log('register')
-        let newUser = new User({
-          name: response.name, 
-          email: response.email,
-          birthday: response.birthday,
-          gender: response.gender
-        })
-
-        newUser.save()
-        .then(user => {
-          console.log('save')
-          let token = jwt.sign({
-            token: user
-          }, secret)
-
-          res.status(201).send({
-            message: 'Register new account success, continue to login...',
-            token: token
-          })
-        })
-        .catch(error => {
-          console.log('error login failed')
-          res.status(400).send({
-            message: 'Login failed!',
-            error: error.message
-          })
+      .catch(err => {
+        res.status(400).send({
+          message: 'Login failed!',
+          error: err.message
         })
       })
     })
