@@ -27,7 +27,7 @@ module.exports = {
         err.message = 'Email already exist!'
       }
       res.status(400).send({
-        error: 'Register failed!',
+        error: 'Register failed, invalid email/password!',
         detail: err.message
       })
     })

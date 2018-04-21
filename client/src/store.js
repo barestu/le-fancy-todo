@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import swal from 'sweetalert'
 
-const baseUrl = 'http://localhost:4000'
+// const baseUrl = 'http://localhost:4000'
+const baseUrl = 'https://taskfan-server.herokuapp.com'
 let token = localStorage.getItem('token')
 
 Vue.use(Vuex)
@@ -18,6 +19,25 @@ export default new Vuex.Store({
     },
     todosComplete (state) {
       return state.todos.filter(todos => todos.done)
+    },
+    todosTomorrow (state) {
+      let arrResult = []
+
+      state.todos.forEach(todo => {
+        let today = new Date()
+        let dueDate = new Date(todo.due_date)
+
+        today = today.getDate()
+        dueDate = dueDate.getDate()
+
+        let result = dueDate - today
+
+        if (result < 2 && todo.done === false) {
+          arrResult.push(todo)
+        }
+      })
+
+      return arrResult
     }
   },
   mutations: {
