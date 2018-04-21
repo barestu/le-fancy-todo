@@ -2,12 +2,15 @@
   <tr>
     <td>{{ todo.task }}</td>
     <td>{{ dateFormat }}</td>
-    <td>{{ todo.done }}</td>
-    <td>
-      <button @click="changeStatuses({ todo: todo, status: true })" class="btn btn-sm btn-success">Check</button>
-      <button @click="changeStatuses({ todo: todo, status: false })" class="btn btn-sm btn-warning">Uncheck</button>
-      <button class="btn btn-sm btn-info" data-toggle="modal" :data-target="targetUpdateModal">Update</button>
-      <button @click="deleteTodos(todo)" class="btn btn-sm btn-danger">Delete</button>
+    <td class="text-center">
+      <h5 v-if="todo.done"><span class="badge badge-success">Complete</span></h5>
+      <h5 v-else><span class="badge badge-warning">On Going</span></h5>
+    </td>
+    <td class="text-center">
+      <button @click="changeStatuses({ todo: todo, status: true })" class="btn btn-sm btn-success mx-1 my-1">Check</button>
+      <button @click="changeStatuses({ todo: todo, status: false })" class="btn btn-sm btn-warning mx-1 my-1">Uncheck</button> |
+      <button class="btn btn-sm btn-info mx-1 my-1" data-toggle="modal" :data-target="targetUpdateModal">Update</button>
+      <button @click="deleteTodos(todo)" class="btn btn-sm btn-danger mx-1 my-1">Delete</button>
     </td>
     <!-- Modal Add New Task-->
     <div class="modal fade" :id="idUpdateModal">
@@ -111,6 +114,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.btn {
+  width: 75px;
+}
 
+.btn-light {
+  width: 35px;;
+}
+
+#share-buttons img {
+padding: 5px;
+border: 0;
+box-shadow: 0;
+display: inline;
+}
 </style>

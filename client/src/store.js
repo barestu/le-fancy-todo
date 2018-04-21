@@ -18,6 +18,26 @@ export default new Vuex.Store({
     },
     todosComplete (state) {
       return state.todos.filter(todos => todos.done)
+    },
+    todosTomorrow (state) {
+      let arrResult = []
+
+      state.todos.forEach(todo => {
+        let today = new Date()
+        let dueDate = new Date(todo.due_date)
+
+        today = today.getDate()
+        dueDate = dueDate.getDate()
+
+        let result = today - dueDate
+
+        if (result < 2 && todo.done === false) {
+          console.log(todo)
+          arrResult.push(todo)
+        }
+      })
+      console.log(arrResult)
+      return arrResult
     }
   },
   mutations: {
