@@ -7,6 +7,12 @@
 
           <form class="text-center">
             <div class="form-signin mt-3">
+              <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
 
               <input type="email" class="form-control" v-model="email" id="emailInput" placeholder="Enter email">
               <input type="password" class="form-control" v-model="password" id="passwordInput" placeholder="Enter password">
@@ -43,7 +49,8 @@ export default {
   data: function () {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: ''
     }
   },
   methods: {
@@ -59,6 +66,7 @@ export default {
         })
         .catch(error => {
           console.log('Login failed', error)
+          this.errorMessage = 'Invalid email/password!'
         })
     },
 
