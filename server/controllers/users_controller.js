@@ -59,8 +59,6 @@ module.exports = {
       })
     })
     .catch(err => {
-      console.log('not found')
-
       res.status(400).send({
         message: 'Invalid email!'
       })
@@ -79,9 +77,7 @@ module.exports = {
         email: response.email
       })
       .then(user => {
-        console.log('hahaha ', user)
         if (user !== null) {
-          console.log('found')
           let token = jwt.sign({
             token: user
           }, secret)
@@ -91,7 +87,6 @@ module.exports = {
             token: token
           })
         } else {
-          console.log('register')
           let newUser = new User({
             name: response.name, 
             email: response.email,
