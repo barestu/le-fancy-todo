@@ -15,9 +15,9 @@ let userSchema = new Schema ({
     match: [/\S+@\S+\.\S+/, 'Invalid email format!']
   },
   password: {
-    type: String
-    // required: [true, 'required!'],
-    // match: [/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/, 'Password length should be atleast 6 alhpa-numeric characters!']
+    type: String,
+    required: [true, 'required!'],
+    match: [/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/, 'Password length should be atleast 6 alhpa-numeric characters!']
   },
   role: {
     type: String,
