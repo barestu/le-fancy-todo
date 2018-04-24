@@ -14,10 +14,16 @@
               <div class="form-group">
                 <label class="ml-2">Email</label>
                 <input type="text" class="form-control" :class="{ error: wrongEmail }" v-model="email" name="email" value="" placeholder="example@email.com" required>
+                <div v-if="emailErrMsg !== ''">
+                  {{ emailErrMsg }}
+                </div>
               </div>
               <div class="form-group">
                 <label class="ml-2">Password</label>
                 <input type="password" class="form-control" :class="{ error: wrongPassword }" v-model="password" name="password" value="" placeholder="Your password" required>
+                <div v-if="passErrMsg !== ''">
+                  {{ passErrMsg }}
+                </div>
               </div>
               <div class="form-group">
                 <label class="ml-2">Birthday</label>
@@ -76,6 +82,8 @@ export default {
       gender: '',
       wrongEmail: false,
       wrongPassword: false,
+      passErrMsg: '',
+      emailErrMsg: '',
       errorMessage: ''
     }
   },
@@ -107,8 +115,10 @@ export default {
 
       if (!result) {
         this.wrongEmail = true
+        this.emailErrMsg = 'Invalid email format (example: xxx@xxx.xxx)'
       } else {
         this.wrongEmail = false
+        this.emailErrMsg = ''
       }
     },
     password: function () {
@@ -117,8 +127,10 @@ export default {
 
       if (!result) {
         this.wrongPassword = true
+        this.passErrMsg = 'Password length should be atleast 6 alhpa-numeric characters!'
       } else {
         this.wrongPassword = false
+        this.passErrMsg = ''
       }
     }
 

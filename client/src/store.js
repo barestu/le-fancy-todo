@@ -5,13 +5,13 @@ import swal from 'sweetalert'
 
 // const baseUrl = 'http://localhost:4000'
 const baseUrl = 'https://taskfan-server.herokuapp.com'
-let token = localStorage.getItem('token')
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    todos: []
+    todos: [],
+    isLogin: false
   },
   getters: {
     todosActive (state) {
@@ -41,6 +41,14 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setLogin (state) {
+      state.isLogin = true
+    },
+
+    setLogout (state) {
+      state.isLogin = false
+    },
+
     setTodos (state, todos) {
       state.todos = todos
     },
@@ -82,10 +90,13 @@ export default new Vuex.Store({
   },
   actions: {
     getTodos: ({commit}) => {
+      let token = localStorage.getItem('token')
+
       axios.get(`${baseUrl}/todo`, {
         headers: { token }
       })
         .then(response => {
+          console.log('jalan')
           commit('setTodos', response.data.todos)
         })
         .catch(error => {
@@ -94,6 +105,8 @@ export default new Vuex.Store({
     },
 
     addTodos: ({commit}, newTodo) => {
+      let token = localStorage.getItem('token')
+
       axios.post(`${baseUrl}/todo/add`, newTodo, {
         headers: { token }
       })
@@ -106,6 +119,8 @@ export default new Vuex.Store({
     },
 
     changeStatuses: ({commit}, data) => {
+      let token = localStorage.getItem('token')
+
       axios.put(`${baseUrl}/todo/update/${data.todo._id}`, {
         task: data.todo.task,
         done: data.status,
@@ -122,6 +137,8 @@ export default new Vuex.Store({
     },
 
     updateTodos: ({commit}, data) => {
+      let token = localStorage.getItem('token')
+
       axios.put(`${baseUrl}/todo/update/${data._id}`, {
         task: data.task,
         done: data.done,
@@ -138,6 +155,8 @@ export default new Vuex.Store({
     },
 
     deleteTodos: ({commit}, data) => {
+      let token = localStorage.getItem('token')
+
       swal({
         title: 'Delete todo?',
         text: 'Are you sure want to delete this todo?',

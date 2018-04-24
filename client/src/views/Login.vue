@@ -43,6 +43,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Login',
@@ -53,15 +54,26 @@ export default {
       errorMessage: ''
     }
   },
+  computed: {
+    ...mapState([
+      'isLogin'
+    ])
+  },
   methods: {
-    login (context, user) {
+    ...mapActions([
+      'getTodos'
+    ]),
+    ...mapMutations([
+      'setLogin'
+    ]),
+    login () {
       axios.post(`${this.$baseUrl}/user/login`, {
         email: this.email,
         password: this.password
       })
         .then(response => {
           localStorage.setItem('token', response.data.token)
-          this.$isLogin = true
+          this.setLogin()
           this.$router.push('/')
         })
         .catch(error => {
@@ -70,7 +82,7 @@ export default {
         })
     },
 
-    fbLogin (context) {
+    fbLogin () {
       window.FB.login((response) => {
         if (response.authResponse) {
           let tokenFB = response.authResponse.accessToken
@@ -81,7 +93,7 @@ export default {
             .then(response => {
               console.log('logged in', response)
               localStorage.setItem('token', response.data.token)
-              this.$isLogin = true
+              this.setLogin()
               this.$router.push('/')
             })
             .catch(error => {
