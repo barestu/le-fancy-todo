@@ -173,7 +173,7 @@
 <script>
 import Todo from '@/components/Todo.vue'
 import TodoNotif from '@/components/TodoNotif.vue'
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'home',
@@ -194,15 +194,20 @@ export default {
       'getTodos',
       'addTodos'
     ]),
+    ...mapMutations([
+      'setLogin',
+      'setLogout'
+    ]),
     logout () {
-      this.$router.push('/login')
-      this.$isLogin = false
+      // this.$isLogin = false
       localStorage.removeItem('token')
-      // window.location.href = '/'
+      this.setLogout()
+      this.$router.push('/login')
     }
   },
   computed: {
     ...mapState([
+      'isLogin',
       'todos'
     ]),
     ...mapGetters([
@@ -212,7 +217,13 @@ export default {
     ])
   },
   mounted () {
-    if (this.$isLogin) {
+    let token = localStorage.getItem('token')
+
+    if (token) {
+      this.setLogin()
+    }
+
+    if (this.isLogin) {
       this.getTodos()
     } else {
       this.$router.push('/login')
